@@ -37,8 +37,8 @@ class Post(models.Model):
 
 
 class UserRelationship(models.Model):
-    user_first = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_second = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    user_first = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
+    user_second = models.ForeignKey(User, on_delete=models.CASCADE, related_name='dependent')
     type = models.ForeignKey(TypeUserRelationShip, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
 
