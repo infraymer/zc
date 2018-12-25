@@ -65,7 +65,7 @@ class AuthUser(APIView):
                 oauth=data['oauth']
             )
             user.save()
-            return Response()
+            return Response(UserSerializer(user))
         except:
             return Response(status=400)
 
@@ -84,11 +84,12 @@ class UserList(APIView):
 
     def get(self, _):
         user = self.request.query_params.get('id', None)
-        query = self.request.query_params.get('query', None)
+        query = self.request.query_params.get('query', '')
 
         user_queryset = User.objects.get(pk=user)
 
         queryset = User.objects.exclude(pk=user).filter(username__contains=query)
+
         users = UserSerializer(queryset, many=True).data
 
         q = [r.user_second for r in user_queryset.owner.all()]
