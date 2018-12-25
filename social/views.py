@@ -45,13 +45,29 @@ class LocationViewSet(viewsets.ModelViewSet):
 class AuthUser(APIView):
 
     def get(self, requset):
-        username = self.request.query_params.get('id', None)
+        oauth = self.request.query_params.get('oauth', None)
         try:
-            user = User.objects.get(pk=username)
+            user = User.objects.get(oauth=oauth)
             serializer = UserSerializer(user)
             return Response({'created': True, 'data': serializer.data})
         except:
             return Response({'created': False, 'data': None})
+
+    def post(self, _):
+        try:
+            data = self.request.data
+            user = User.objects.create(
+                username=data['username'],
+                fullname=data['fullname'],
+                email=data['email'],
+                image=data['image'],
+                is_active=True,
+                oauth=data['oauth']
+            )
+            user.save()
+            return Response()
+        except:
+            return Response(status=400)
 
 
 class FriendsList(APIView):
@@ -118,5 +134,14 @@ class PostList(APIView):
 
         user = User.objects.get(pk=pk)
         posts = Post.objects.filter(Q(owner__dependent__in=user.owner.all()) | Q(owner=user))
+
+        return Response(PostSerializer(posts, many=True).data)
+
+
+class UserPostList(APIView):
+
+    def get(self, _):
+        pk = self.request.query_params.get('id', None)
+        posts = Post.objects.filter(owner=pk)
 
         return Response(PostSerializer(posts, many=True).data)

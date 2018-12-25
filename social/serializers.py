@@ -12,7 +12,7 @@ class TypeActivitySerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'fullname', 'email', 'updated_at', 'created_at', 'image', 'is_active')
+        fields = ('id', 'username', 'fullname', 'email', 'updated_at', 'created_at', 'image', 'is_active', 'oauth')
 
 
 class TypeUserRelationShipSerializer(serializers.ModelSerializer):

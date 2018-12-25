@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^friends', views.FriendsList.as_view()),
     url(r'^users', views.UserList.as_view()),
     url(r'^posts', views.PostList.as_view()),
+    url(r'^user-posts', views.UserPostList.as_view()),
     url(r'^follow', views.Follow.as_view()),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
