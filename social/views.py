@@ -45,9 +45,9 @@ class LocationViewSet(viewsets.ModelViewSet):
 class AuthUser(APIView):
 
     def get(self, requset):
-        username = self.request.query_params.get('user', None)
+        username = self.request.query_params.get('id', None)
         try:
-            user = User.objects.get(user=username)
+            user = User.objects.get(pk=username)
             serializer = UserSerializer(user)
             return Response({'created': True, 'data': serializer.data})
         except:
@@ -57,8 +57,8 @@ class AuthUser(APIView):
 class FriendsList(APIView):
 
     def get(self, request):
-        username = self.request.query_params.get('user', None)
-        user = User.objects.get(username=username)
+        username = self.request.query_params.get('id', None)
+        user = User.objects.get(pk=username)
         rel = user.owner.all()
         friends = [r.user_second for r in rel]
         return Response(UserSerializer(friends, many=True).data)
@@ -67,12 +67,12 @@ class FriendsList(APIView):
 class UserList(APIView):
 
     def get(self, _):
-        user = self.request.query_params.get('user', None)
+        user = self.request.query_params.get('id', None)
         query = self.request.query_params.get('query', None)
 
-        user_queryset = User.objects.get(username=user)
+        user_queryset = User.objects.get(pk=user)
 
-        queryset = User.objects.exclude(username=user).filter(username__contains=query)
+        queryset = User.objects.exclude(pk=user).filter(username__contains=query)
         users = UserSerializer(queryset, many=True).data
 
         q = [r.user_second for r in user_queryset.owner.all()]
