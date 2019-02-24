@@ -1,11 +1,8 @@
 from django.db.models import Q
 from rest_framework import viewsets
-
 # Create your views here.
-from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django_filters.rest_framework import DjangoFilterBackend
 
 from social.models import TypeActivity, User, TypeUserRelationShip, UserRelationship, Post, Location
 from social.serializers import TypeActivitySerializer, UserSerializer, TypeUserRelationShipSerializer, \
